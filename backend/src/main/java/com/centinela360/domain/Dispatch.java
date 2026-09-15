@@ -1,0 +1,26 @@
+package com.centinela360.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table("dispatches")
+public class Dispatch {
+    @Id
+    private UUID id;
+    private UUID incidentId;
+    private UUID unitId;
+    private String status;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
+}
