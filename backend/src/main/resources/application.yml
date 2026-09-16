@@ -1,0 +1,41 @@
+spring:
+    application:
+        name: centinela360-backend
+
+    datasource:
+        url: jdbc:postgresql://localhost:5432/centinela360
+        username: centinela
+        password: centinela_dev
+        driver-class-name: org.postgresql.Driver
+    r2dbc:
+        url: r2dbc:postgresql://localhost:5432/centinela360
+        username: centinela
+        password: centinela_dev
+        pool:
+            enabled: true
+            initial-size: 5
+            max-size: 10
+    flyway:
+        url: jdbc:postgresql://localhost:5432/centinela360
+        user: centinela
+        password: centinela_dev
+        locations: classpath:db/migration
+        baseline-on-migrate: true
+
+    kafka:
+        bootstrap-servers: localhost:9092
+        consumer:
+            group-id: centinela360-backend
+            auto-offset-reset: earliest
+        producer:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info
+    endpoint:
+        health:
+            show-details: always
