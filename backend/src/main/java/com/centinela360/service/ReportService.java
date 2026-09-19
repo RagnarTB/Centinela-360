@@ -10,6 +10,8 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ReportService {
@@ -28,6 +30,7 @@ public class ReportService {
                 .description(request.description())
                 .status("RECIBIDO")
                 .location(point)
+                .createdAt(OffsetDateTime.now())
                 .build();
 
         return reportRepository.save(report)
