@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/reports")
 @RequiredArgsConstructor
@@ -21,5 +23,11 @@ public class ReportController {
     public Mono<ResponseEntity<ReportResponse>> createReport(@Valid @RequestBody CreateReportRequest request) {
         return reportService.createReport(request)
                 .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
+    }
+
+    @GetMapping("/{id}")
+    public Mono<ResponseEntity<ReportResponse>> getReportById(@PathVariable UUID id) {
+        return reportService.getReportById(id)
+                .map(ResponseEntity::ok);
     }
 }

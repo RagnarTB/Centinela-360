@@ -7,10 +7,13 @@ import com.centinela360.domain.Report;
 import com.centinela360.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +51,13 @@ public class ReportService {
                 r.getLocation().getX(), // longitude
                 r.getCreatedAt()
         );
+    }
+
+    public Mono<ReportResponse> getReportById(UUID id) {
+        return reportRepository.findById(id)
+                .map(this::toResponse)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Reporte no encontrado: " + id)));
+
     }
 }
