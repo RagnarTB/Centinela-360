@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -29,5 +30,10 @@ public class ReportController {
     public Mono<ResponseEntity<ReportResponse>> getReportById(@PathVariable UUID id) {
         return reportService.getReportById(id)
                 .map(ResponseEntity::ok);
+    }
+
+    @GetMapping("/me")
+    public Flux<ReportResponse> getMyReports(@RequestHeader("X-User-Id") UUID userId){
+        return reportService.getMyReports(userId);
     }
 }

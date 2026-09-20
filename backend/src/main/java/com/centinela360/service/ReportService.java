@@ -10,6 +10,7 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -28,6 +29,7 @@ public class ReportService {
         );
 
         Report report = Report.builder()
+                .userId(request.userId())
                 .channel(request.channel())
                 .category(request.category())
                 .description(request.description())
@@ -59,5 +61,11 @@ public class ReportService {
                 .switchIfEmpty(Mono.error(new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Reporte no encontrado: " + id)));
 
+    }
+
+
+    public Flux<ReportResponse> getMyReports(UUID userId) {
+        return reportRepository.findByUserId(userId)
+                .map(this::toResponse);
     }
 }
