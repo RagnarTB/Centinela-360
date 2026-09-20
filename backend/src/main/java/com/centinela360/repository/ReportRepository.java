@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface ReportRepository extends ReactiveCrudRepository<Report, UUID> {
     Flux<Report> findByUserId(UUID userId);
     Flux<Report> findByStatus(String status);
+
+
 }
