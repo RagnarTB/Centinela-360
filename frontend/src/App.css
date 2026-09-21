@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
+.central-360 {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #0f1720;
+    color: #e6edf3;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.topbar {
+    padding: 12px 20px;
+    background: #131c2b;
+    border-bottom: 1px solid #22314a;
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 300px 1fr 320px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.incident-list, .detail-panel {
+    padding: 16px;
+    overflow-y: auto;
+    background: #131c2b;
+}
+
+.incident-list {
+    border-right: 1px solid #22314a;
+}
+
+.detail-panel {
+    border-left: 1px solid #22314a;
+}
+
+.incident-list h2, .detail-panel h2 {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #8fa3c0;
+    margin-top: 0;
+}
+
+.incident-card {
+    background: #1a2537;
+    border: 1px solid #22314a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+.incident-card:hover {
+    border-color: #3a6ea5;
+}
+
+.incident-card.selected {
+    border-color: #4da3ff;
+    background: #1e2f4a;
+}
+
+.incident-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.badge {
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.time {
+    font-size: 11px;
+    color: #8fa3c0;
+}
+
+.incident-category {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.incident-trust {
+    font-size: 12px;
+    color: #8fa3c0;
+    margin-top: 4px;
+}
+
+.map-column {
+    height: 100%;
+}
+
+.empty {
+    color: #5c7192;
+    font-size: 13px;
+}
+
+.btn-assign {
+    margin-top: 16px;
+    width: 100%;
+    padding: 10px;
+    background: #2d3f5c;
+    color: #8fa3c0;
+    border: 1px solid #3a4d6b;
+    border-radius: 6px;
+    cursor: not-allowed;
+}
