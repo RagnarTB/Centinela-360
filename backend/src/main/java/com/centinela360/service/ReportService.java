@@ -4,6 +4,7 @@ import com.centinela360.config.R2dbcConfig;
 import com.centinela360.controller.dto.CreateReportRequest;
 import com.centinela360.controller.dto.ReportResponse;
 import com.centinela360.domain.Report;
+import com.centinela360.kafka.producer.ReportEventProducer;
 import com.centinela360.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+    private final ReportEventProducer reportEventProducer;
 
     public Mono<ReportResponse> createReport(CreateReportRequest request) {
         Point point = R2dbcConfig.makePoint(
@@ -39,7 +41,8 @@ public class ReportService {
                 .build();
 
         return reportRepository.save(report)
-                .map(this::toResponse);
+                .map(this::toResponse)
+                .doOnNext(reportEventProducer::publishReportCreated);
     }
 
     private ReportResponse toResponse(Report r) {
