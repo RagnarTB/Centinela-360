@@ -2,6 +2,7 @@ package com.centinela360.service;
 
 import com.centinela360.controller.dto.UnitResponse;
 import com.centinela360.domain.PatrolUnit;
+import com.centinela360.kafka.producer.UnitLocationEventProducer;
 import com.centinela360.repository.PatrolUnitRepository;
 import com.centinela360.repository.UnitLocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class PatrolUnitService {
 
     private final PatrolUnitRepository unitRepository;
     private final UnitLocationRepository unitLocationRepository;
+    private final UnitLocationEventProducer unitLocationEventProducer;
 
     public Flux<UnitResponse> getAllUnits() {
         return unitRepository.findAll()
@@ -58,6 +60,7 @@ public class PatrolUnitService {
                                     unit.getId(), unit.getCode(), unit.getStatus(),
                                     request.latitude(), request.longitude(), saved.getRecordedAt()
                             ));
-                });
+                })
+                .doOnNext(unitLocationEventProducer::publishLocationUpdated);
     }
 }
