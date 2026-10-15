@@ -41,3 +41,8 @@ management:
     endpoint:
         health:
             show-details: always
+
+centinela:
+    consolidation:
+        distance-meters: 500
+        time-window-minutes: 120
