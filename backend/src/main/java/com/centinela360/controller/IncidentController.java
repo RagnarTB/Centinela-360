@@ -3,6 +3,8 @@ package com.centinela360.controller;
 import com.centinela360.controller.dto.IncidentDetailResponse;
 import com.centinela360.controller.dto.IncidentSummaryResponse;
 import com.centinela360.service.IncidentService;
+import com.centinela360.controller.dto.ReviewIncidentRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -25,5 +27,12 @@ public class IncidentController {
     @GetMapping("/{id}")
     public Mono<IncidentDetailResponse> getIncidentById(@PathVariable UUID id) {
         return incidentService.getIncidentById(id);
+    }
+
+    @PostMapping("/{id}/review")
+    public Mono<IncidentDetailResponse> reviewIncident(
+            @PathVariable UUID id,
+            @Valid @RequestBody ReviewIncidentRequest request) {
+        return incidentService.reviewIncident(id, request);
     }
 }
