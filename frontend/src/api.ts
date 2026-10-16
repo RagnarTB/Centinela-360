@@ -98,3 +98,12 @@ export function fetchMyReports(userId = '00000000-0000-0000-0000-000000000001'):
         headers: {'X-User-Id': userId}
     }).then((res) => handle<ReportSummary[]>(res));
 }
+
+// Fase 9: Noticias y Alertas ciudadanas (INF-01 / INF-02)
+export function fetchNews(): Promise<import('./types').NewsItem[]> {
+    return fetch('/api/v1/news').then((res) => handle<import('./types').NewsItem[]>(res));
+}
+
+export function fetchAlerts(): Promise<import('./types').AlertItem[]> {
+    return fetch('/api/v1/alerts').then((res) => handle<import('./types').AlertItem[]>(res));
+}

@@ -796,3 +796,235 @@
   gap: 8px;
   margin-top: 16px;
 }
+
+/* Sub-navegación Ciudadana (Fase 9) */
+.citizen-subnav {
+  display: flex;
+  gap: 12px;
+  max-width: 1350px;
+  margin: 0 auto 20px auto;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.subnav-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.subnav-btn:hover {
+  background: var(--bg-tertiary);
+  color: #fff;
+  border-color: var(--border-hover);
+}
+
+.subnav-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* Noticias y Alertas Grid */
+.news-alerts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 1350px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.alerts-section h3, .news-section h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.6px;
+  margin-bottom: 14px;
+}
+
+.empty-info {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.alerts-grid, .news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.alert-card-item {
+  background: #241416;
+  border: 1px solid #7f1d1d;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.alert-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.alert-badge {
+  background: #dc2626;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.alert-expiry {
+  font-size: 11px;
+  color: #fca5a5;
+}
+
+.alert-card-item h4 {
+  margin: 0 0 8px 0;
+  color: #fecaca;
+  font-size: 15px;
+}
+
+.alert-card-item p {
+  font-size: 13px;
+  color: #fed7aa;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.news-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.news-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tag-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.tag-oficial { background: #1e3a8a; color: #93c5fd; }
+.tag-preventivo { background: #78350f; color: #fde68a; }
+.tag-informativo { background: #14532d; color: #bbf7d0; }
+
+.news-date {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.news-card-item h4 {
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-size: 15px;
+}
+
+.news-card-item p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Consejos y Contactos Grid */
+.tips-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+}
+
+.tip-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.tip-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #fff;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.contacts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contacts-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contacts-list li:last-child {
+  border-bottom: none;
+}
+
+.contacts-list strong {
+  display: block;
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.contacts-list span {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.tip-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.tip-item h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: #93c5fd;
+}
+
+.tip-item p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}

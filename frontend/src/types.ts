@@ -64,3 +64,19 @@ export interface CreateReportPayload {
         longitude: number;
     };
 }
+
+export interface NewsItem {
+    id: string;
+    title: string;
+    body: string;
+    tag: 'OFICIAL' | 'PREVENTIVO' | 'INFORMATIVO';
+    publishedAt: string;
+}
+
+export interface AlertItem {
+    id: string;
+    title: string;
+    body: string;
+    expiresAt: string | null;
+    createdAt: string;
+}
