@@ -44,5 +44,5 @@ management:
 
 centinela:
     consolidation:
-        distance-meters: 500
+        distance-meters: 300
         time-window-minutes: 120

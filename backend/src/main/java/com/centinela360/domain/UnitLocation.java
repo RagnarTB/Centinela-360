@@ -1,5 +1,7 @@
 package com.centinela360.domain;
 
+import com.centinela360.config.JtsPointSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +22,7 @@ public class UnitLocation {
     @Id
     private UUID id;
     private UUID unitId;
+    @JsonSerialize(using = JtsPointSerializer.class)
     private Point location;
     private OffsetDateTime recordedAt;
 }

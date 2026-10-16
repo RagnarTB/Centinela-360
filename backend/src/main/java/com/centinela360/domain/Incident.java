@@ -1,5 +1,7 @@
 package com.centinela360.domain;
 
+import com.centinela360.config.JtsPointSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class Incident {
     private String category;
     private String status;
     private BigDecimal trustScore;
+    @JsonSerialize(using = JtsPointSerializer.class)
     private Point location;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
