@@ -32,4 +32,10 @@ public class PatrolUnitController {
     public Mono<UnitResponse> updateLocation(@PathVariable UUID id, @Valid @RequestBody UpdateLocationRequest request) {
         return unitService.updateLocation(id, request);
     }
+
+    @org.springframework.web.bind.annotation.PatchMapping("/{id}/status")
+    public Mono<UnitResponse> updateStatus(@PathVariable UUID id, @RequestBody java.util.Map<String, String> body) {
+        String status = body.getOrDefault("status", "DISPONIBLE");
+        return unitService.updateStatus(id, status);
+    }
 }

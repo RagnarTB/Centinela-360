@@ -63,4 +63,16 @@ public class PatrolUnitService {
                 })
                 .doOnNext(unitLocationEventProducer::publishLocationUpdated);
     }
+
+    public Mono<UnitResponse> updateStatus(UUID unitId, String status) {
+        return unitRepository.findById(unitId)
+                .switchIfEmpty(Mono.error(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad no encontrada: " + unitId)
+                ))
+                .flatMap(unit -> {
+                    unit.setStatus(status.toUpperCase());
+                    return unitRepository.save(unit);
+                })
+                .flatMap(this::toResponseWithLastLocation);
+    }
 }
