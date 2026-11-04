@@ -1,5 +1,6 @@
 package com.centinela360.domain;
 
+import io.r2dbc.postgresql.codec.Json;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,19 @@ public class IncidentEvent {
     private UUID id;
     private UUID incidentId;
     private String eventType;
-    private String payload; // JSONB como String por ahora; se tipa mejor si hace falta más adelante
+    private Json payload;
     private OffsetDateTime createdAt;
+
+    public static IncidentEvent create(UUID incidentId, String eventType, String jsonString) {
+        return IncidentEvent.builder()
+                .incidentId(incidentId)
+                .eventType(eventType)
+                .payload(jsonString != null ? Json.of(jsonString) : null)
+                .createdAt(OffsetDateTime.now())
+                .build();
+    }
+
+    public String getPayloadAsString() {
+        return payload != null ? payload.asString() : null;
+    }
 }

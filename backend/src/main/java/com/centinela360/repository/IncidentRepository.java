@@ -15,6 +15,8 @@ public interface IncidentRepository extends ReactiveCrudRepository<Incident, UUI
 
     Flux<Incident> findByStatus(String status);
 
+    Flux<Incident> findAllByOrderByCreatedAtDesc();
+
     @Query("""
             SELECT * FROM incidents
             WHERE status <> 'ATENDIDO'

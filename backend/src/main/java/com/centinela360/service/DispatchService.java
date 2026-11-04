@@ -132,12 +132,11 @@ public class DispatchService {
                                             // Actualiza estado de unidad
                                             unit.setStatus("EN_CAMINO");
 
-                                            IncidentEvent event = IncidentEvent.builder()
-                                                    .incidentId(incident.getId())
-                                                    .eventType("DISPATCH_CREATED")
-                                                    .payload(String.format("{\"dispatchId\":\"%s\",\"unitCode\":\"%s\"}", savedDispatch.getId(), unit.getCode()))
-                                                    .createdAt(OffsetDateTime.now())
-                                                    .build();
+                                            IncidentEvent event = IncidentEvent.create(
+                                                    incident.getId(),
+                                                    "DISPATCH_CREATED",
+                                                    String.format("{\"dispatchId\":\"%s\",\"unitCode\":\"%s\"}", savedDispatch.getId(), unit.getCode())
+                                            );
 
                                             return incidentRepository.save(incident)
                                                     .then(patrolUnitRepository.save(unit))
@@ -190,12 +189,11 @@ public class DispatchService {
 
                                         incident.setUpdatedAt(OffsetDateTime.now());
 
-                                        IncidentEvent event = IncidentEvent.builder()
-                                                .incidentId(incident.getId())
-                                                .eventType("DISPATCH_STATUS_" + newStatus)
-                                                .payload(String.format("{\"notes\":\"%s\"}", request.notes() != null ? request.notes() : ""))
-                                                .createdAt(OffsetDateTime.now())
-                                                .build();
+                                        IncidentEvent event = IncidentEvent.create(
+                                                incident.getId(),
+                                                "DISPATCH_STATUS_" + newStatus,
+                                                String.format("{\"notes\":\"%s\"}", request.notes() != null ? request.notes() : "")
+                                        );
 
                                         return dispatchRepository.save(dispatch)
                                                 .then(patrolUnitRepository.save(unit))

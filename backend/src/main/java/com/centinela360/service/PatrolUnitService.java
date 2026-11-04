@@ -28,7 +28,8 @@ public class PatrolUnitService {
 
     public Flux<UnitResponse> getAllUnits() {
         return unitRepository.findAll()
-                .flatMap(this::toResponseWithLastLocation);
+                .flatMap(this::toResponseWithLastLocation)
+                .sort(java.util.Comparator.comparing(UnitResponse::code));
     }
 
     private reactor.core.publisher.Mono<UnitResponse> toResponseWithLastLocation(PatrolUnit unit) {

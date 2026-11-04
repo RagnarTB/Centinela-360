@@ -7,6 +7,14 @@ import {
     createDispatch,
     fetchDispatchForIncident
 } from '../api';
+import {
+    CheckIcon,
+    XIcon,
+    CarIcon,
+    RouteIcon,
+    ClockIcon,
+    AlertTriangleIcon
+} from './Icons';
 
 interface Props {
     incidentId: string | null;
@@ -90,13 +98,13 @@ export default function IncidentDetailPanel({incidentId, onIncidentUpdated}: Pro
     if (!incidentId) {
         return (
             <div className="detail-panel">
-                <p className="empty">Selecciona un incidente en la lista o el mapa</p>
+                <p className="empty">Seleccione un incidente en el radar o en la lista operativa para gestionar su despacho</p>
             </div>
         );
     }
 
     if (loading && !detail) {
-        return <div className="detail-panel"><p>Cargando detalles...</p></div>;
+        return <div className="detail-panel"><p>Consultando bitácora de suceso...</p></div>;
     }
 
     if (!detail) {
@@ -112,58 +120,71 @@ export default function IncidentDetailPanel({incidentId, onIncidentUpdated}: Pro
                 </span>
             </div>
 
-            {errorMsg && <div className="alert-box error">{errorMsg}</div>}
+            {errorMsg && (
+                <div className="alert-box error">
+                    <AlertTriangleIcon size={14} />
+                    <span>{errorMsg}</span>
+                </div>
+            )}
 
             <div className="detail-metrics">
                 <div className="metric-box">
-                    <span className="metric-label">TrustScore</span>
+                    <span className="metric-label">Confiabilidad (TrustScore)</span>
                     <span className="metric-value trust-score">
                         {detail.trustScore != null ? `${detail.trustScore}%` : 'N/D'}
                     </span>
                 </div>
                 <div className="metric-box">
-                    <span className="metric-label">Reportes Asoc.</span>
+                    <span className="metric-label">Reportes Consolidados</span>
                     <span className="metric-value">{detail.relatedReports.length}</span>
                 </div>
             </div>
 
             <div className="detail-meta">
-                <p><strong>Ubicación:</strong> {detail.latitude.toFixed(4)}, {detail.longitude.toFixed(4)} (Chiclayo)</p>
-                <p><strong>Registrado:</strong> {new Date(detail.createdAt).toLocaleTimeString()} ({new Date(detail.createdAt).toLocaleDateString()})</p>
+                <p><strong>Ubicación:</strong> {detail.latitude.toFixed(5)}, {detail.longitude.toFixed(5)} (Chiclayo)</p>
+                <p><strong>Hora de Ingreso:</strong> {new Date(detail.createdAt).toLocaleTimeString()} ({new Date(detail.createdAt).toLocaleDateString()})</p>
             </div>
 
-            {/* FASE 6: REVISIÓN DE OPERADOR (VAL-02 / HU-CEN-06) */}
+            {/* VALIDACIÓN OPERATIVA DE CECOM */}
             {detail.status === 'ABIERTO' && (
                 <div className="section-review">
-                    <h4>Validación Operativa (Revisión Humana)</h4>
+                    <h4>Validación Operativa (CECOM Chiclayo)</h4>
                     <div className="button-group">
                         <button
                             className="btn btn-confirm"
                             disabled={actionLoading}
                             onClick={() => handleReview('CONFIRMAR')}
                         >
-                            ✓ Confirmar Hecho
+                            <CheckIcon size={15} />
+                            <span>Confirmar Hecho</span>
                         </button>
                         <button
                             className="btn btn-discard"
                             disabled={actionLoading}
                             onClick={() => handleReview('DESCARTAR')}
                         >
-                            ✕ Descartar
+                            <XIcon size={15} />
+                            <span>Descartar Falsa Alarma</span>
                         </button>
                     </div>
                 </div>
             )}
 
-            {/* FASE 7: MOTOR DE RECOMENDACIÓN Y DESPACHO (DSP-01, DSP-02 / HU-CEN-08, 09) */}
+            {/* RECOMENDACIÓN DE DESPACHO */}
             {(detail.status === 'ABIERTO' || detail.status === 'CONFIRMADO') && (
                 <div className="section-dispatch">
-                    <h4>Recomendación de Despacho (ETA)</h4>
+                    <h4>Despacho Recomendado por Proximidad</h4>
                     {recommendation ? (
                         <div className="recommendation-card">
                             <div className="rec-header">
-                                <span className="rec-code">Unidad {recommendation.code}</span>
-                                <span className="rec-eta">{recommendation.estimatedArrivalMinutes} min ETA</span>
+                                <span className="rec-code" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                                    <CarIcon size={14} />
+                                    Unidad {recommendation.code}
+                                </span>
+                                <span className="rec-eta" style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+                                    <ClockIcon size={13} />
+                                    {recommendation.estimatedArrivalMinutes} min ETA
+                                </span>
                             </div>
                             <p className="rec-dist">Distancia: {(recommendation.distanceMeters / 1000).toFixed(2)} km ({Math.round(recommendation.distanceMeters)} m)</p>
                             <p className="rec-rationale">{recommendation.rationale}</p>
@@ -172,29 +193,33 @@ export default function IncidentDetailPanel({incidentId, onIncidentUpdated}: Pro
                                 disabled={actionLoading}
                                 onClick={() => handleDispatch(recommendation.unitId)}
                             >
-                                Asignar y Despachar Unidad
+                                <RouteIcon size={15} />
+                                <span>Asignar y Despachar Unidad</span>
                             </button>
                         </div>
                     ) : (
-                        <p className="no-units">No hay patrulleros disponibles en este momento.</p>
+                        <p className="no-units">Todas las unidades del cuadrante se encuentran en intervención.</p>
                     )}
                 </div>
             )}
 
-            {/* SEGUIMIENTO DE DESPACHO ACTIVO (HU-CEN-10) */}
+            {/* SEGUIMIENTO DE DESPACHO ACTIVO */}
             {activeDispatch && (
                 <div className="section-active-dispatch">
-                    <h4>Patrulla en Servicio</h4>
+                    <h4>Unidad en Misión de Intervención</h4>
                     <div className="dispatch-badge">
-                        <span>Unidad: <strong>{activeDispatch.unitCode}</strong></span>
+                        <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                            <CarIcon size={14} />
+                            Unidad: <strong>{activeDispatch.unitCode}</strong>
+                        </span>
                         <span>Estado: <strong className={`dispatch-${activeDispatch.status.toLowerCase()}`}>{activeDispatch.status}</strong></span>
                     </div>
                 </div>
             )}
 
-            <h3>Reportes ciudadanos asociados ({detail.relatedReports.length})</h3>
+            <h3>Reportes vecinales asociados ({detail.relatedReports.length})</h3>
             {detail.relatedReports.length === 0 ? (
-                <p className="empty">Sin reportes asociados todavía.</p>
+                <p className="empty">Sin avisos complementarios registrados.</p>
             ) : (
                 <ul className="reports-list">
                     {detail.relatedReports.map((r) => (
@@ -203,7 +228,7 @@ export default function IncidentDetailPanel({incidentId, onIncidentUpdated}: Pro
                                 <span className="channel-tag">{r.channel}</span>
                                 <span className="report-time">{new Date(r.createdAt).toLocaleTimeString()}</span>
                             </div>
-                            <p className="report-desc">{r.description || 'Sin descripción detallada'}</p>
+                            <p className="report-desc">{r.description || 'Aviso ciudadano sin observaciones añadidas'}</p>
                         </li>
                     ))}
                 </ul>

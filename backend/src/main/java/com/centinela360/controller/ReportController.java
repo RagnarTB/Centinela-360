@@ -33,7 +33,8 @@ public class ReportController {
     }
 
     @GetMapping("/me")
-    public Flux<ReportResponse> getMyReports(@RequestHeader("X-User-Id") UUID userId){
+    public Flux<ReportResponse> getMyReports(
+            @RequestHeader(value = "X-User-Id", defaultValue = "e2c440a8-6d2c-4157-a10c-500876af520a") UUID userId) {
         return reportService.getMyReports(userId);
     }
 }

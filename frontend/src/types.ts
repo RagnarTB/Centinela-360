@@ -80,3 +80,48 @@ export interface AlertItem {
     expiresAt: string | null;
     createdAt: string;
 }
+
+// Fase 10 / APF3 - Tipos para Inteligencia Artificial y Rutas
+export interface ClusteringCentroid {
+    clusterId: number;
+    latitude: number;
+    longitude: number;
+}
+
+export interface KMeansResult {
+    k: number;
+    inertia: number;
+    executionTimeMs: number;
+    centroids: ClusteringCentroid[];
+    clusterCounts: Record<number, number>;
+}
+
+export interface DbscanResult {
+    epsMeters: number;
+    minPts: number;
+    clustersCount: number;
+    noisePointsCount: number;
+    executionTimeMs: number;
+    clusterCounts: Record<number, number>;
+}
+
+export interface ClusteringComparisonResponse {
+    totalReportsAnalyzed: number;
+    kMeans: KMeansResult;
+    dbscan: DbscanResult;
+    recommendation: string;
+}
+
+export interface RouteWaypoint {
+    latitude: number;
+    longitude: number;
+    name: string;
+}
+
+export interface RouteResponse {
+    algorithm: string;
+    totalDistanceMeters: number;
+    estimatedArrivalMinutes: number;
+    waypoints: RouteWaypoint[];
+    roadSegments: string[];
+}

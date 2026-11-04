@@ -30,8 +30,12 @@ public class ReportService {
                 request.location().latitude()
         );
 
+        UUID userId = request.userId() != null
+                ? request.userId()
+                : UUID.fromString("e2c440a8-6d2c-4157-a10c-500876af520a");
+
         Report report = Report.builder()
-                .userId(request.userId())
+                .userId(userId)
                 .channel(request.channel())
                 .category(request.category())
                 .description(request.description())

@@ -34,7 +34,7 @@ public class IncidentService {
     private final IncidentEventProducer incidentEventProducer;
 
     public Flux<IncidentSummaryResponse> getAllIncidents() {
-        return incidentRepository.findAll().map(this::toSummary);
+        return incidentRepository.findAllByOrderByCreatedAtDesc().map(this::toSummary);
     }
 
     public Mono<IncidentDetailResponse> getIncidentById(UUID id) {
@@ -79,14 +79,13 @@ public class IncidentService {
                     }
                     incident.setUpdatedAt(OffsetDateTime.now());
 
-                    IncidentEvent event = IncidentEvent.builder()
-                            .incidentId(incident.getId())
-                            .eventType("INCIDENT_" + action)
-                            .payload(String.format("{\"notes\":\"%s\",\"operatorId\":\"%s\"}",
+                    IncidentEvent event = IncidentEvent.create(
+                            incident.getId(),
+                            "INCIDENT_" + action,
+                            String.format("{\"notes\":\"%s\",\"operatorId\":\"%s\"}",
                                     request.notes() != null ? request.notes() : "",
-                                    request.operatorId() != null ? request.operatorId() : ""))
-                            .createdAt(OffsetDateTime.now())
-                            .build();
+                                    request.operatorId() != null ? request.operatorId() : "")
+                    );
 
                     return incidentRepository.save(incident)
                             .then(incidentEventRepository.save(event))
